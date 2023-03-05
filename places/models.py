@@ -38,20 +38,22 @@ class Place(models.Model):
             "properties": {
                 "title": self.title,
                 "placeId": f"key_{self.pk}",
-                "detailsUrl": f"{self.details_url}",
-                "details": {
+                "detailsUrl": f"/places/{self.pk}/",
+            }
+        }
+        return feature
+
+    def get_place_json(self):
+        return {
                     "title": self.title,
                     "imgs": self.get_images_list(),
-                    "description_short": "self.description_short",
-                    "description_long": "self.descripton_long",
+                    "description_short": self.description_short,
+                    "description_long": self.descripton_long,
                     "coordinates": {
                         "lng": float(self.lng),
                         "lat": float(self.lat),
                     }
                 }
-            }
-        }
-        return feature
 
 
 class Image(models.Model):
