@@ -8,7 +8,6 @@ class Place(models.Model):
     lng = models.DecimalField(max_digits=20, decimal_places=15, default=0)
     description_short = models.TextField(max_length=1000, default='', null=True)
     descripton_long = models.TextField(max_length=5000, default='', null=True)
-    details_url = models.CharField(max_length=200, null=True)
 
     def __str__(self) -> str:
         return self.title
@@ -58,6 +57,7 @@ class Place(models.Model):
 
 class Image(models.Model):
     image = models.ImageField()
+    position = models.IntegerField()
     place = models.ForeignKey('Place', on_delete=models.SET_NULL, null=True)
 
     def __str__(self) -> str:
