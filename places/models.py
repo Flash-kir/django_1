@@ -1,11 +1,57 @@
 from django.db import models
+from decimal import Decimal, ROUND_HALF_UP
 
 
 class Place(models.Model):
-    title = models.CharField(max_length=64)
+    title = models.CharField(max_length=100)
+    lat = models.DecimalField(max_digits=20, decimal_places=15, default=0)
+    lng = models.DecimalField(max_digits=20, decimal_places=15, default=0)
+    description_short = models.TextField(max_length=1000, default='', null=True)
+    descripton_long = models.TextField(max_length=5000, default='', null=True)
+    details_url = models.CharField(max_length=200, null=True)
 
     def __str__(self) -> str:
         return self.title
+
+    def get_images_list(self):
+        images_list = []
+        for image in Image.objects.filter(place=self):
+            images_list.append(image.image.url)
+        return images_list
+
+    def get_lat(self, round="1.000000"):
+        return self.lat.quantize(Decimal(round), ROUND_HALF_UP)
+
+    def get_lng(self, round="1.00"):
+        return self.lng.quantize(Decimal(round), ROUND_HALF_UP)
+
+    def get_place_feature(self):
+        feature = {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    float(self.get_lng()),
+                    float(self.get_lat())
+                    ]
+            },
+            "properties": {
+                "title": self.title,
+                "placeId": f"key_{self.pk}",
+                "detailsUrl": f"{self.details_url}",
+                "details": {
+                    "title": self.title,
+                    "imgs": self.get_images_list(),
+                    "description_short": "self.description_short",
+                    "description_long": "self.descripton_long",
+                    "coordinates": {
+                        "lng": float(self.lng),
+                        "lat": float(self.lat),
+                    }
+                }
+            }
+        }
+        return feature
 
 
 class Image(models.Model):
