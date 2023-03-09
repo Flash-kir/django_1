@@ -1,5 +1,6 @@
 from django.db import models
 from decimal import Decimal, ROUND_HALF_UP
+from django.utils.html import format_html
 
 
 class Place(models.Model):
@@ -62,3 +63,12 @@ class Image(models.Model):
 
     def __str__(self) -> str:
         return f'{self.pk} {self.place}'
+
+
+    def preview_image(obj):
+        return format_html(
+            '<img src="{url}" width={width} />'.format(
+                url=obj.image.url,
+                width=200,
+            )
+        )
