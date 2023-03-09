@@ -58,12 +58,11 @@ class Place(models.Model):
 
 class Image(models.Model):
     image = models.ImageField()
-    position = models.IntegerField()
+    position = models.PositiveSmallIntegerField(default=0)
     place = models.ForeignKey('Place', on_delete=models.SET_NULL, null=True)
 
     def __str__(self) -> str:
         return f'{self.pk} {self.place}'
-
 
     def preview_image(obj):
         return format_html(
@@ -72,3 +71,6 @@ class Image(models.Model):
                 width=200,
             )
         )
+
+    class Meta:
+        ordering = ['position']
