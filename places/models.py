@@ -1,14 +1,15 @@
 from django.db import models
 from decimal import Decimal, ROUND_HALF_UP
 from django.utils.html import format_html
+from tinymce.models import HTMLField
 
 
 class Place(models.Model):
     title = models.CharField(max_length=100)
     lat = models.DecimalField(max_digits=20, decimal_places=15, default=0)
     lng = models.DecimalField(max_digits=20, decimal_places=15, default=0)
-    description_short = models.TextField(max_length=1000, default='', null=True)
-    descripton_long = models.TextField(max_length=5000, default='', null=True)
+    description_short = HTMLField()
+    descripton_long = HTMLField()
 
     def __str__(self) -> str:
         return self.title
