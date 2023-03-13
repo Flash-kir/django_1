@@ -10,10 +10,12 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
+import mimetypes
 
 from pathlib import Path
 from environs import Env
 
+mimetypes.add_type("text/css", ".css", True)
 env = Env()
 env.read_env()
 
@@ -103,7 +105,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-STATIC_URL = os.path.join(BASE_DIR, 'static_files')
+STATIC_URL = '/static_files/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
