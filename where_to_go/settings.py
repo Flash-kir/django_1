@@ -10,11 +10,12 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
+import mimetypes
 
 from pathlib import Path
 from environs import Env
 
-
+mimetypes.add_type("text/css", ".css", True)
 env = Env()
 env.read_env()
 
