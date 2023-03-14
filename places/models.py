@@ -1,7 +1,10 @@
+import requests
+
 from django.db import models
 from decimal import Decimal, ROUND_HALF_UP
 from django.utils.html import format_html
 from tinymce.models import HTMLField
+from django.core.files.base import ContentFile
 
 
 class Place(models.Model):
@@ -9,7 +12,7 @@ class Place(models.Model):
     lat = models.DecimalField(max_digits=20, decimal_places=15, default=0)
     lng = models.DecimalField(max_digits=20, decimal_places=15, default=0)
     description_short = HTMLField()
-    descripton_long = HTMLField()
+    description_long = HTMLField()
 
     def __str__(self) -> str:
         return self.title
@@ -49,12 +52,36 @@ class Place(models.Model):
                     "title": self.title,
                     "imgs": self.get_images_list(),
                     "description_short": self.description_short,
-                    "description_long": self.descripton_long,
+                    "description_long": self.description_long,
                     "coordinates": {
                         "lng": float(self.lng),
                         "lat": float(self.lat),
                     }
                 }
+
+    def load_image(self, image_path, position):
+        response = requests.get(image_path)
+        response.raise_for_status()
+        image_type = image_path.split('.')[-1]
+        image = Image.objects.create()
+        image.place = self
+        image.position = position
+        image.image.save(
+            f'image_{self.pk}_{image.pk}.{image_type}',
+            ContentFile(response.content),
+            save=True,
+            )
+        image.save()
+
+    def fill_from_dict(self, place_content):
+        self.title = place_content['title']
+        self.lat = place_content['coordinates']['lat']
+        self.lng = place_content['coordinates']['lng']
+        self.description_short = place_content['description_short']
+        self.description_long = place_content['description_long']
+        self.save()
+        for position, image_path in enumerate(place_content['imgs']):
+            self.load_image(image_path, position)
 
 
 class Image(models.Model):
