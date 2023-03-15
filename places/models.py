@@ -9,8 +9,8 @@ from django.core.files.base import ContentFile
 
 class Place(models.Model):
     title = models.CharField(max_length=100)
-    lat = models.DecimalField(max_digits=20, decimal_places=15, default=0)
-    lng = models.DecimalField(max_digits=20, decimal_places=15, default=0)
+    lat = models.FloatField(default=0)
+    lng = models.FloatField(default=0)
     description_short = HTMLField()
     description_long = HTMLField()
 
@@ -18,10 +18,7 @@ class Place(models.Model):
         return self.title
 
     def get_images_list(self):
-        images_list = []
-        for image in self.images.all():
-            images_list.append(image.image.url)
-        return images_list
+        return [image.image.url for image in self.images.all()]
 
     def get_lat(self, round='1.000000'):
         return self.lat.quantize(Decimal(round), ROUND_HALF_UP)
@@ -35,8 +32,8 @@ class Place(models.Model):
             'geometry': {
                 'type': 'Point',
                 'coordinates': [
-                    float(self.get_lng()),
-                    float(self.get_lat())
+                    round(self.lng, 2),
+                    round(self.lat, 6)
                     ]
             },
             'properties': {
@@ -54,8 +51,8 @@ class Place(models.Model):
                     'description_short': self.description_short,
                     'description_long': self.description_long,
                     'coordinates': {
-                        'lng': float(self.lng),
-                        'lat': float(self.lat),
+                        'lng': self.lng,
+                        'lat': self.lat,
                     }
                 }
 
