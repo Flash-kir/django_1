@@ -9,7 +9,7 @@ class Place(models.Model):
     title = models.CharField(max_length=100)
     lat = models.FloatField(default=0)
     lng = models.FloatField(default=0)
-    description_short = HTMLField()
+    description_short = models.TextField()
     description_long = HTMLField()
 
     def __str__(self) -> str:
