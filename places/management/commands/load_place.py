@@ -3,6 +3,33 @@ import requests
 
 from django.core.management.base import BaseCommand, CommandError
 from places.models import Place, Image
+from django.core.files.base import ContentFile
+
+
+def load_image(place, image_path, position):
+    response = requests.get(image_path)
+    response.raise_for_status()
+    image_type = image_path.split('.')[-1]
+    image = Image.objects.create()
+    image.place = place
+    image.position = position
+    image.image.save(
+        f'image_{place.pk}_{image.pk}.{image_type}',
+        ContentFile(response.content),
+        save=True,
+        )
+    image.save()
+
+
+def fill_from_dict(place, place_content):
+    place.title = place_content['title']
+    place.lat = place_content['coordinates']['lat']
+    place.lng = place_content['coordinates']['lng']
+    place.description_short = place_content['description_short']
+    place.description_long = place_content['description_long']
+    place.save()
+    for position, image_path in enumerate(place_content['imgs']):
+        load_image(place, image_path, position)
 
 
 class Command(BaseCommand):
