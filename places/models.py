@@ -20,12 +20,6 @@ class Place(models.Model):
     def get_images_list(self):
         return [image.image.url for image in self.images.all()]
 
-    def get_lat(self, round='1.000000'):
-        return self.lat.quantize(Decimal(round), ROUND_HALF_UP)
-
-    def get_lng(self, round='1.00'):
-        return self.lng.quantize(Decimal(round), ROUND_HALF_UP)
-
     def get_place_feature(self):
         feature = {
             'type': 'Feature',
