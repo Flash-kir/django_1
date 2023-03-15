@@ -56,21 +56,21 @@ $ python manage.py runserver
 Значение поля `placeId` может быть либо строкой, либо числом. Само значение не играет большой роли, важно лишь чтобы оно было уникальным. Фронтенд использует `placeId` чтобы избавиться от дубликатов — если у двух локаций одинаковый `placeId`, то значит это одно и то же место.
 
 ```javascript
-<script id="places-geojson" type="application/json">
+<script id='places-geojson' type='application/json'>
   {
-    "type": "FeatureCollection",
-    "features": [
+    'type': 'FeatureCollection',
+    'features': [
       {
-        "type": "Feature",
-        "geometry": {
-          "type": "Point",
-          "coordinates": [37.62, 55.793676]
+        'type': 'Feature',
+        'geometry': {
+          'type': 'Point',
+          'coordinates': [37.62, 55.793676]
         },
-        "properties": {
+        'properties': {
           // Специфичные для этого сайта данные
-          "title": "Легенды Москвы",
-          "placeId": "moscow_legends",
-          "detailsUrl": "./places/moscow_legends.json"
+          'title': 'Легенды Москвы',
+          'placeId': 'moscow_legends',
+          'detailsUrl': './places/moscow_legends.json'
         }
       },
       // ...
@@ -82,17 +82,17 @@ $ python manage.py runserver
 
 ```javascript
 {
-    "title": "Экскурсионный проект «Крыши24.рф»",
-    "imgs": [
-        "https://kudago.com/media/images/place/d0/f6/d0f665a80d1d8d110826ba797569df02.jpg",
-        "https://kudago.com/media/images/place/66/23/6623e6c8e93727c9b0bb198972d9e9fa.jpg",
-        "https://kudago.com/media/images/place/64/82/64827b20010de8430bfc4fb14e786c19.jpg",
+    'title': 'Экскурсионный проект «Крыши24.рф»',
+    'imgs': [
+        'https://kudago.com/media/images/place/d0/f6/d0f665a80d1d8d110826ba797569df02.jpg',
+        'https://kudago.com/media/images/place/66/23/6623e6c8e93727c9b0bb198972d9e9fa.jpg',
+        'https://kudago.com/media/images/place/64/82/64827b20010de8430bfc4fb14e786c19.jpg',
     ],
-    "description_short": "Хотите увидеть Москву с высоты птичьего полёта?",
-    "description_long": "<p>Проект «Крыши24.рф» проводит экскурсии ...</p>",
-    "coordinates": {
-        "lat": 55.753676,
-        "lng": 37.64
+    'description_short': 'Хотите увидеть Москву с высоты птичьего полёта?',
+    'description_long': '<p>Проект «Крыши24.рф» проводит экскурсии ...</p>',
+    'coordinates': {
+        'lat': 55.753676,
+        'lng': 37.64
     }
 }
 ```

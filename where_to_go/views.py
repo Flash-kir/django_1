@@ -11,12 +11,12 @@ def main_page(request):
     for place in places:
         features.append(place.get_place_feature())
     feature_collection = {
-                    "type": "FeatureCollection",
-                    "features": features,
+                    'type': 'FeatureCollection',
+                    'features': features,
     }
     geojson = json.dumps(feature_collection, indent=2)
     places_features = {
-        "features": geojson,
+        'features': geojson,
     }
 
     rendered_page = template.render(places_features, request)

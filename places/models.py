@@ -23,39 +23,39 @@ class Place(models.Model):
             images_list.append(image.image.url)
         return images_list
 
-    def get_lat(self, round="1.000000"):
+    def get_lat(self, round='1.000000'):
         return self.lat.quantize(Decimal(round), ROUND_HALF_UP)
 
-    def get_lng(self, round="1.00"):
+    def get_lng(self, round='1.00'):
         return self.lng.quantize(Decimal(round), ROUND_HALF_UP)
 
     def get_place_feature(self):
         feature = {
-            "type": "Feature",
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
+            'type': 'Feature',
+            'geometry': {
+                'type': 'Point',
+                'coordinates': [
                     float(self.get_lng()),
                     float(self.get_lat())
                     ]
             },
-            "properties": {
-                "title": self.title,
-                "placeId": f"key_{self.pk}",
-                "detailsUrl": f"/places/{self.pk}/",
+            'properties': {
+                'title': self.title,
+                'placeId': f'key_{self.pk}',
+                'detailsUrl': f'/places/{self.pk}/',
             }
         }
         return feature
 
     def get_place_json(self):
         return {
-                    "title": self.title,
-                    "imgs": self.get_images_list(),
-                    "description_short": self.description_short,
-                    "description_long": self.description_long,
-                    "coordinates": {
-                        "lng": float(self.lng),
-                        "lat": float(self.lat),
+                    'title': self.title,
+                    'imgs': self.get_images_list(),
+                    'description_short': self.description_short,
+                    'description_long': self.description_long,
+                    'coordinates': {
+                        'lng': float(self.lng),
+                        'lat': float(self.lat),
                     }
                 }
 

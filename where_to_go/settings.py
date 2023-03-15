@@ -15,7 +15,7 @@ import mimetypes
 from pathlib import Path
 from environs import Env
 
-mimetypes.add_type("text/css", ".css", True)
+mimetypes.add_type('text/css', '.css', True)
 env = Env()
 env.read_env()
 
@@ -29,7 +29,7 @@ CSRF_COOKIE_SECURE = env.bool('CSRF_COOKIE_SECURE', False)
 
 SESSION_COOKIE_SECURE = env.bool('SESSION_COOKIE_SECURE', False)
 
-ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', ["localhost", ])
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', ['localhost', ])
 
 INSTALLED_APPS = [
     'django.contrib.admin',
