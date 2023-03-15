@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.template import loader
 from places.models import Place
+from django.urls import reverse
 import json
 
 
@@ -17,7 +18,7 @@ def get_place_feature(place):
         'properties': {
             'title': place.title,
             'placeId': f'key_{place.pk}',
-            'detailsUrl': f'/places/{place.pk}/',
+            'detailsUrl': reverse('place-detail', args=(place.pk,)),
         }
     }
     return feature
