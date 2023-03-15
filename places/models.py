@@ -19,7 +19,7 @@ class Place(models.Model):
 
     def get_images_list(self):
         images_list = []
-        for image in Image.objects.filter(place=self):
+        for image in self.images.all():
             images_list.append(image.image.url)
         return images_list
 
@@ -87,7 +87,12 @@ class Place(models.Model):
 class Image(models.Model):
     image = models.ImageField()
     position = models.PositiveSmallIntegerField(default=0)
-    place = models.ForeignKey('Place', on_delete=models.SET_NULL, null=True)
+    place = models.ForeignKey(
+        'Place',
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name='images',
+        )
 
     def __str__(self) -> str:
         return f'{self.pk} {self.place}'
