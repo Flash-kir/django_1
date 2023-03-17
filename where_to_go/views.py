@@ -1,6 +1,5 @@
 from django.http import HttpResponse
-from django.shortcuts import render
-from django.template import loader
+from django.shortcuts import render, get_object_or_404
 from places.models import Place
 from django.urls import reverse
 import json
@@ -51,6 +50,6 @@ def main_page(request):
 
 
 def place_detail_view(request, place_id):
-    place = Place.objects.get(id=place_id)
+    place = get_object_or_404(Place, id=place_id)
     place_json = json.dumps(get_place_content(place), indent=2)
     return HttpResponse(place_json)
