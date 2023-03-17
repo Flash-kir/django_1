@@ -11,10 +11,10 @@ def get_place_feature(place):
         'geometry': {
             'type': 'Point',
             'coordinates': [
-                round(place.lng, 2),
-                round(place.lat, 6)
-                ]
-            },
+                place.lng,
+                place.lat
+            ]
+        },
         'properties': {
             'title': place.title,
             'placeId': f'key_{place.pk}',
@@ -26,15 +26,15 @@ def get_place_feature(place):
 
 def get_place_content(place):
     return {
-            'title': place.title,
-            'imgs': place.get_images_list(),
-            'description_short': place.description_short,
-            'description_long': place.description_long,
-            'coordinates': {
-                'lng': place.lng,
-                'lat': place.lat,
-            }
+        'title': place.title,
+        'imgs': [image.image.url for image in place.images.all()],
+        'description_short': place.description_short,
+        'description_long': place.description_long,
+        'coordinates': {
+            'lng': place.lng,
+            'lat': place.lat,
         }
+    }
 
 
 def main_page(request):
@@ -44,8 +44,8 @@ def main_page(request):
     for place in places:
         features.append(get_place_feature(place))
     feature_collection = {
-                    'type': 'FeatureCollection',
-                    'features': features,
+        'type': 'FeatureCollection',
+        'features': features,
     }
     geojson = json.dumps(feature_collection, indent=2)
     places_features = {

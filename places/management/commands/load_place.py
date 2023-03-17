@@ -17,7 +17,7 @@ def load_image(place, image_path, position):
         f'image_{place.pk}_{image.pk}.{image_type}',
         ContentFile(response.content),
         save=True,
-        )
+    )
     image.save()
 
 
@@ -40,7 +40,7 @@ class Command(BaseCommand):
             'file_path',
             action='store',
             type=str
-            )
+        )
 
     def handle(self, *args, **options):
         url = options['file_path']
@@ -52,7 +52,7 @@ class Command(BaseCommand):
                 title=place_content['title'],
                 lat=place_content['coordinates']['lat'],
                 lng=place_content['coordinates']['lng'],
-                ).first()
+            ).first()
             if not place:
                 place = Place.objects.create()
                 place.fill_from_dict(place_content)
