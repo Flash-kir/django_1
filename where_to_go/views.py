@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
 from places.models import Place
 from django.urls import reverse
@@ -30,15 +30,18 @@ def main_page(request):
         'type': 'FeatureCollection',
         'features': features,
     }
-    places_features = {
-        'features': json.dumps(feature_collection, indent=2),
-    }
-    return render(request, 'index.html', context=places_features)
+    return render(
+        request,
+        'index.html',
+        context={
+            'features': json.dumps(feature_collection, indent=2),
+        }
+    )
 
 
 def place_detail_view(request, place_id):
     place = get_object_or_404(Place, id=place_id)
-    place_content = {
+    return JsonResponse({
         'title': place.title,
         'imgs': [image.image.url for image in place.images.all()],
         'description_short': place.description_short,
@@ -47,5 +50,4 @@ def place_detail_view(request, place_id):
             'lng': place.lng,
             'lat': place.lat,
         }
-    }
-    return HttpResponse(json.dumps(place_content, indent=2))
+    })
