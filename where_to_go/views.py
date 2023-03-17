@@ -24,19 +24,6 @@ def get_place_feature(place):
     return feature
 
 
-def get_place_content(place):
-    return {
-        'title': place.title,
-        'imgs': [image.image.url for image in place.images.all()],
-        'description_short': place.description_short,
-        'description_long': place.description_long,
-        'coordinates': {
-            'lng': place.lng,
-            'lat': place.lat,
-        }
-    }
-
-
 def main_page(request):
     features = [get_place_feature(place) for place in Place.objects.all()]
     feature_collection = {
@@ -51,5 +38,14 @@ def main_page(request):
 
 def place_detail_view(request, place_id):
     place = get_object_or_404(Place, id=place_id)
-    place_json = json.dumps(get_place_content(place), indent=2)
-    return HttpResponse(place_json)
+    place_content = {
+        'title': place.title,
+        'imgs': [image.image.url for image in place.images.all()],
+        'description_short': place.description_short,
+        'description_long': place.description_long,
+        'coordinates': {
+            'lng': place.lng,
+            'lat': place.lat,
+        }
+    }
+    return HttpResponse(json.dumps(place_content, indent=2))
