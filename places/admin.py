@@ -7,9 +7,9 @@ from django.utils.html import format_html
 
 @admin.register(Image)
 class ImageAdmin(SortableAdminMixin, admin.ModelAdmin):
-    readonly_fields = ('preview_image',)
+    readonly_fields = ['preview_image']
 
-    def preview_image(obj):
+    def preview_image(self, obj):
         return format_html(
             '<img src="{url}" width={width} />'.format(
                 url=obj.image.url,
@@ -21,8 +21,16 @@ class ImageAdmin(SortableAdminMixin, admin.ModelAdmin):
 class ImageInline(SortableInlineAdminMixin, admin.StackedInline):
     model = Image
     extra = 1
-    readonly_fields = ('preview_image',)
-    fields = ('image', 'preview_image')
+    readonly_fields = ['preview_image']
+    fields = ['image', 'preview_image']
+
+    def preview_image(self, obj):
+        return format_html(
+            '<img src="{url}" width={width} />'.format(
+                url=obj.image.url,
+                width=200,
+            )
+        )
 
 
 @admin.register(Place)
