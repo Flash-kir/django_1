@@ -1,4 +1,5 @@
 from django.http import HttpResponse
+from django.shortcuts import render
 from django.template import loader
 from places.models import Place
 from django.urls import reverse
@@ -38,22 +39,15 @@ def get_place_content(place):
 
 
 def main_page(request):
-    template = loader.get_template('index.html')
-    places = Place.objects.all()
-    features = []
-    for place in places:
-        features.append(get_place_feature(place))
+    features = [get_place_feature(place) for place in Place.objects.all()]
     feature_collection = {
         'type': 'FeatureCollection',
         'features': features,
     }
-    geojson = json.dumps(feature_collection, indent=2)
     places_features = {
-        'features': geojson,
+        'features': json.dumps(feature_collection, indent=2),
     }
-
-    rendered_page = template.render(places_features, request)
-    return HttpResponse(rendered_page)
+    return render(request, 'index.html', context=places_features)
 
 
 def place_detail_view(request, place_id):
