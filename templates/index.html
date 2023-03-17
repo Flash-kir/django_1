@@ -39,10 +39,7 @@
       width: 100px;
     }
   </style>
-  <script id="places-geojson" type="application/json">
-    {{ features | safe }}
-  </script>
-
+  {{ features|json_script:"places-geojson" }}
   <script id="app-template" type="text/template">
     <div v-bind:class="{'sidebar-content': 1, 'bg-white': selectedPlace, 'bg-secondary': !selectedPlace}">
       <div v-if="promptVisible" class="d-flex flex-column justify-content-center align-items-center" style="height: 100%;">

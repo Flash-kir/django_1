@@ -2,7 +2,6 @@ from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
 from places.models import Place
 from django.urls import reverse
-import json
 
 
 def get_place_feature(place):
@@ -26,15 +25,14 @@ def get_place_feature(place):
 
 def main_page(request):
     features = [get_place_feature(place) for place in Place.objects.all()]
-    feature_collection = {
-        'type': 'FeatureCollection',
-        'features': features,
-    }
     return render(
         request,
         'index.html',
         context={
-            'features': json.dumps(feature_collection, indent=2),
+            'features': {
+                'type': 'FeatureCollection',
+                'features': features,
+            },
         }
     )
 
