@@ -5,17 +5,20 @@ from adminsortable2.admin import SortableAdminBase, SortableInlineAdminMixin
 from django.utils.html import format_html
 
 
+def image_html_format(url, width=200):
+    return format_html(
+            '<img src="{}" width={} />',
+            url,
+            width,
+        )
+
+
 @admin.register(Image)
 class ImageAdmin(SortableAdminMixin, admin.ModelAdmin):
     readonly_fields = ['preview_image']
 
     def preview_image(self, obj):
-        return format_html(
-            '<img src="{url}" width={width} />'.format(
-                url=obj.image.url,
-                width=200,
-            )
-        )
+        return image_html_format(obj.image.url)
 
 
 class ImageInline(SortableInlineAdminMixin, admin.StackedInline):
@@ -25,12 +28,7 @@ class ImageInline(SortableInlineAdminMixin, admin.StackedInline):
     fields = ['image', 'preview_image']
 
     def preview_image(self, obj):
-        return format_html(
-            '<img src="{url}" width={width} />'.format(
-                url=obj.image.url,
-                width=200,
-            )
-        )
+        return image_html_format(obj.image.url)
 
 
 @admin.register(Place)

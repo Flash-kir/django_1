@@ -2,7 +2,6 @@ from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
 from places.models import Place
 from django.urls import reverse
-from django.core.serializers.json import DjangoJSONEncoder
 
 
 def get_place_feature(place):
