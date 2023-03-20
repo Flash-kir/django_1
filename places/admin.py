@@ -2,7 +2,7 @@ from django.contrib import admin
 from places.models import Place, Image
 from adminsortable2.admin import SortableAdminMixin
 from adminsortable2.admin import SortableAdminBase, SortableInlineAdminMixin
-from admin_view_tools import image_html_format
+from places.admin_view_tools import image_html_format
 
 
 @admin.register(Image)
