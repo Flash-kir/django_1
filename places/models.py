@@ -12,6 +12,9 @@ class Place(models.Model):
     def __str__(self) -> str:
         return self.title
 
+    class Meta:
+        unique_together = ('title', 'lat', 'lng')
+
 
 class Image(models.Model):
     image = models.ImageField()

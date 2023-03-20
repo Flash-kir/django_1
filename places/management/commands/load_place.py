@@ -1,4 +1,3 @@
-import json
 import requests
 
 from django.core.management.base import BaseCommand, CommandError
@@ -18,18 +17,6 @@ def load_image(place, image_path, position):
         ContentFile(response.content),
         save=True,
     )
-    image.save()
-
-
-def fill_from_dict(place, place_content):
-    place.title = place_content['title']
-    place.lat = place_content['coordinates']['lat']
-    place.lng = place_content['coordinates']['lng']
-    place.description_short = place_content['description_short']
-    place.description_long = place_content['description_long']
-    place.save()
-    for position, image_path in enumerate(place_content['imgs']):
-        load_image(place, image_path, position)
 
 
 class Command(BaseCommand):
@@ -48,15 +35,31 @@ class Command(BaseCommand):
             response = requests.get(url)
             response.raise_for_status()
             place_content = response.json()
-            place = Place.objects.filter(
-                title=place_content['title'],
-                lat=place_content['coordinates']['lat'],
-                lng=place_content['coordinates']['lng'],
-            ).first()
-            if not place:
-                place = Place.objects.create()
-                place.fill_from_dict(place_content)
+            title = place_content['title']
+            lat = place_content['coordinates']['lat']
+            lng = place_content['coordinates']['lng']
+            if not lat or not lng:
+                raise Exception('File do not contain place coordinates')
+            description_short = place_content['description_short']
+            description_long = place_content['description_long']
+            if not description_short:
+                description_short = ''
+            if not description_long:
+                description_long = ''
+            place, created = Place.objects.get_or_create(
+                title=title,
+                lat=lat,
+                lng=lng,
+            )
+            if created:
+                place.description_short = description_short
+                place.description_long = description_long
+                place.save()
+                for position, image_path in enumerate(place_content['imgs']):
+                    load_image(place, image_path, position)
             else:
                 print(f'place {place_content["title"]} allready exist')
-        except:
+        except FileExistsError:
             raise CommandError('File "%s" does not exist' % url)
+        except Exception as err:
+            print(f'Exception: {str(err)}')
