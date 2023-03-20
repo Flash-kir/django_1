@@ -2,15 +2,7 @@ from django.contrib import admin
 from places.models import Place, Image
 from adminsortable2.admin import SortableAdminMixin
 from adminsortable2.admin import SortableAdminBase, SortableInlineAdminMixin
-from django.utils.html import format_html
-
-
-def image_html_format(url, width=200):
-    return format_html(
-            '<img src="{}" width={} />',
-            url,
-            width,
-        )
+from admin_view_tools import image_html_format
 
 
 @admin.register(Image)
