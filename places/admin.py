@@ -9,8 +9,8 @@ from places.admin_view_tools import image_html_format
 class ImageAdmin(SortableAdminMixin, admin.ModelAdmin):
     readonly_fields = ['preview_image']
 
-    def preview_image(self, obj):
-        return image_html_format(obj.image.url)
+    def preview_image(self, image):
+        return image_html_format(image.image.url)
 
 
 class ImageInline(SortableInlineAdminMixin, admin.StackedInline):
@@ -19,8 +19,8 @@ class ImageInline(SortableInlineAdminMixin, admin.StackedInline):
     readonly_fields = ['preview_image']
     fields = ['image', 'preview_image']
 
-    def preview_image(self, obj):
-        return image_html_format(obj.image.url)
+    def preview_image(self, image):
+        return image_html_format(image.image.url)
 
 
 @admin.register(Place)
