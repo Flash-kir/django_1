@@ -36,15 +36,9 @@ class Command(BaseCommand):
             response.raise_for_status()
             place_content = response.json()
 
-            title = place_content.get('title')
-            if not title:
-                raise Exception('File do not contain place title')
-
-            if place_content.get('coordinates'):
-                lat = place_content['coordinates'].get('lat')
-                lng = place_content['coordinates'].get('lng')
-            if not lat or not lng:
-                raise Exception('File do not contain place coordinates')
+            title = place_content['title']
+            lat = place_content['coordinates']['lat']
+            lng = place_content['coordinates']['lng']
 
             description_short = place_content.get('description_short', '')
             description_long = place_content.get('description_long', '')
