@@ -34,7 +34,8 @@ class Command(BaseCommand):
         try:
             response = requests.get(url)
             response.raise_for_status()
-            place_content = response.json()
+            place_content = []
+            response.json()
 
             title = place_content['title']
             lat = place_content['coordinates']['lat']
@@ -65,4 +66,4 @@ class Command(BaseCommand):
         except FileExistsError:
             raise CommandError('File "%s" does not exist' % url)
         except Exception as err:
-            print(f'Exception: {str(err)}')
+            print(f'Exception: {err}')
