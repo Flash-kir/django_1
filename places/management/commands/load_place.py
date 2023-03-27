@@ -9,13 +9,13 @@ def load_image(place, image_path, position):
     response = requests.get(image_path)
     response.raise_for_status()
     image_type = image_path.split('.')[-1]
-    image = Image.objects.create()
-    image.place = place
-    image.position = position
-    image.image.save(
-        f'image_{place.pk}_{image.pk}.{image_type}',
-        ContentFile(response.content),
-        save=True,
+    Image.objects.create(
+        place=place,
+        position=position,
+        image=ContentFile(
+            response.content,
+            f'image_{place.pk}_{position}.{image_type}'
+        )
     )
 
 
@@ -36,7 +36,7 @@ class Command(BaseCommand):
             response.raise_for_status()
             place_content = response.json()
 
-            title = place_content.get('title')
+            title = place_content.get('title') + 'new'
             if not title:
                 raise Exception('File do not contain place title')
 
