@@ -53,11 +53,12 @@ class Command(BaseCommand):
                 title=title,
                 lat=lat,
                 lng=lng,
+                defaults={
+                    'description_short': description_short,
+                    'description_long': description_long,
+                }
             )
             if created:
-                place.description_short = description_short
-                place.description_long = description_long
-                place.save()
                 for position, image_path in enumerate(place_content.get('imgs')):
                     load_image(place, image_path, position)
             else:
