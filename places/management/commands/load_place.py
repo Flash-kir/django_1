@@ -59,11 +59,16 @@ class Command(BaseCommand):
                 }
             )
             if created:
-                for position, image_path in enumerate(place_content.get('imgs')):
+                for position, image_path in enumerate(
+                                                place_content.get(
+                                                    'imgs',
+                                                    default=[]
+                                                )
+                                            ):
                     load_image(place, image_path, position)
             else:
                 print(f'place {place_content["title"]} allready exist')
         except FileExistsError:
-            raise CommandError('File "%s" does not exist' % url)
+            raise CommandError(f'File {url} does not exist')
         except Exception as err:
             print(f'Exception: {err}')
