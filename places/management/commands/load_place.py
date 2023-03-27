@@ -36,7 +36,7 @@ class Command(BaseCommand):
             response.raise_for_status()
             place_content = response.json()
 
-            title = place_content.get('title') + 'new'
+            title = place_content.get('title')
             if not title:
                 raise Exception('File do not contain place title')
 
