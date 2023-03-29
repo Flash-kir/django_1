@@ -52,13 +52,9 @@ class Command(BaseCommand):
                     'description_long': description_long,
                 }
             )
+            image_urls = place_content.get('imgs', default=[])
             if created:
-                for position, image_path in enumerate(
-                                                place_content.get(
-                                                    'imgs',
-                                                    default=[]
-                                                )
-                                            ):
+                for position, image_path in enumerate(image_urls):
                     load_image(place, image_path, position)
             else:
                 print(f'place {place_content["title"]} allready exist')
